@@ -16,6 +16,7 @@ prepare_gradlew() {
     ## Prepare gardle env
     echo "Prepare gradle environment!!"
     cd $BUILDTOOL_PATH
+    rm -rf $GRADLE_PATH
     wget --no-check-certificate -O gradle-${GRADLE_VERSION}-bin.zip https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip
     unzip gradle-${GRADLE_VERSION}-bin.zip
 
@@ -35,5 +36,5 @@ zipStoreBase=GRADLE_USER_HOME
 zipStorePath=wrapper/dists
 distributionUrl=/gradle-$GRADLE_VERSION-bin.zip
 EOF
-    mv $BUILDTOOL_PATH/gradle-${GRADLE_VERSION}-bin.zip $GRADLE_PATH/gradle/wrapper/
+    /bin/cp -f $BUILDTOOL_PATH/gradle-${GRADLE_VERSION}-bin.zip $GRADLE_PATH/gradle/wrapper/
 }
