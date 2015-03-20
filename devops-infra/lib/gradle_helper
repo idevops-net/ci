@@ -2,7 +2,7 @@
 
 BUILDTOOL_PATH=${BUILDTOOL_PATH:-`pwd`/buildtool}
 GRADLE_VERSION=2.3
-GRADLE_PATH=$BUILDTOOL_PATH/gradle-$(GRADLE_VERSION)
+GRADLE_PATH=$BUILDTOOL_PATH/gradle-${GRADLE_VERSION}
 
 # argument 1: destination dir
 copy_gradlew() {
@@ -15,12 +15,12 @@ prepare_gradlew() {
     #######################
     ## Prepare gardle env
     echo "Prepare gradle environment!!"
-    wget --no-check-certificate -O gradle-$(GRADLE_VERSION)-bin.zip https://services.gradle.org/distributions/gradle-$(GRADLE_VERSION)-bin.zip
-    cd $BUILDTOOL_PATH; tar -zxf gradle-$(GRADLE_VERSION)-bin.zip
+    wget --no-check-certificate -O gradle-${GRADLE_VERSION}-bin.zip https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip
+    cd $BUILDTOOL_PATH; tar -zxf gradle-${GRADLE_VERSION}-bin.zip
 
     cat >> $GRADLE_PATH/build.gradle << EOF
 task wrapper(type: Wrapper) {
-    gradleVersion = '$(GRADLE_VERSION)'
+    gradleVersion = '${GRADLE_VERSION}'
 }
 EOF
     # Build gradle wrapper
