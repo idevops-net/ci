@@ -3,7 +3,7 @@
 # By default the path of the tool
 BUILDTOOL_PATH=${BUILDTOOL_PATH:-`pwd`/buildtool}
 
-source ./devops-infra/lib/gradle_helper
+source ../devops-infra/lib/gradle_helper
 
 pushd `pwd`
 mkdir -p $BUILDTOOL_PATH
