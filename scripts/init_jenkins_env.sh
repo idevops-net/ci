@@ -7,9 +7,9 @@ pushd `pwd`
 mkdir -p $BUILDTOOL_PATH
 
 #######################
-## Prepare java env
-echo "Prepare Java environment!!"
-yum install -y java git
+## Install necessary RPM
+echo "Install RPM packages!!"
+yum install -y java git python
 
 #######################
 ## Prepare gardle env
