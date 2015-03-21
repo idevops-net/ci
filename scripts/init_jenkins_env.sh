@@ -13,6 +13,9 @@ mkdir -p $BUILDTOOL_PATH
 echo "Install RPM packages!!"
 yum install -y java git python python-virtualenv
 
+## ds prerequsite
+yum install -y libffi-devel openssl-devel
+
 prepare_gradlew
 
 #######################
