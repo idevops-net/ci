@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+FILE_STORAGE_LOCATION=/build/packages
+COPY_COMMAND=cp
+
+NUM_BUILDS_TO_KEEP=10
+BUILD_KEEP="KEEP.tgz"
+
+# argument 1: component of package
+# argument 2: package file name
+upload_package() {
+    component=$1
+    filename=$2
+    mkdir -p $FILE_STORAGE_LOCATION/$component
+    $COPY_COMMAND $filename $FILE_STORAGE_LOCATION/$component/
+
+    # Delete older packages
+#    old_files=`${SFTP} ${USER}@${GSA_SERVER} << EOF | grep -v sftp | grep -v ${BUILD_KEEP} | tail -n +${NUM_BUILDS_TO_KEEP}
+#cd $FILE_STORAGE_LOCATION/$component
+#ls -lt
+#EOF`
+    old_files=`cd $FILE_STORAGE_LOCATION/$component; ls -t |grep -v "total " |grep -v "$BUILD_KEEP" | tail -n +$((NUM_BUILDS_TO_KEEP+1))`
+    for i in ${old_files}; do
+        echo "Delete older file/directory: ${i}"
+#        ${SFTP} ${USER}@${GSA_SERVER} << EOF
+#cd ${GSA_LOCATION}
+#rm ${i}
+#EOF
+        rm -f $FILE_STORAGE_LOCATION/$component/$i
+    done
+}

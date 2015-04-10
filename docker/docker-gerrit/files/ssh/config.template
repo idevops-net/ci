@@ -1,0 +1,7 @@
+Host REPLICATE_SERVER
+  IdentityFile REPLICATE_KEY
+  PreferredAuthentications publickey
+  StrictHostKeyChecking no
+  UserKnownHostsFile /dev/null
+  User REPLICATE_USER
+  Hostname REPLICATE_SERVER

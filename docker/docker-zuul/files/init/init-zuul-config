@@ -1,0 +1,13 @@
+#!/bin/bash
+set -x
+
+sed "s#GERRIT_SERVER#$GERRIT_SERVER#g;s#GERRIT_URL#$GERRIT_URL#g;s#JENKINS_SSH_KEY#$JENKINS_SSH_KEY#g" /etc/zuul/zuul.conf.template > /etc/zuul/zuul.conf
+cat /etc/zuul/zuul.conf
+
+# generate ssh key
+if [ -f $JENKINS_SSH_KEY ]; then
+  echo "Find ssh key, need not generate new one."
+else
+  mkdir -p /home/jenkins/.ssh
+  ssh-keygen -f /home/jenkins/.ssh/id_rsa -t rsa -N ''
+fi

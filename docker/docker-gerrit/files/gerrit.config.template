@@ -1,0 +1,26 @@
+[gerrit]
+        basePath = git
+        canonicalWebUrl = GERRIT_URL
+[database]
+        type = H2
+        database = db/ReviewDB
+[auth]
+	type = AUTH_TYPE
+[sendemail]
+        smtpServer = localhost
+[container]
+        user = gerrit
+[sshd]
+        listenAddress = *:29418
+[httpd]
+        listenUrl = http://*:8080/
+[cache]
+        directory = cache
+[ldap]
+  server = LDAP_SERVER
+
+  accountBase = LDAP_ACCOUNT_BASE
+  accountPattern = (mail=${username})
+  accountFullName = displayName
+  accountEmailAddress = mail
+  referral = follow

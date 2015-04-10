@@ -1,0 +1,5 @@
+[gerrit]
+host=review.idevops.net
+port=29418
+project=idevops-net/ci
+defaultbranch=master
