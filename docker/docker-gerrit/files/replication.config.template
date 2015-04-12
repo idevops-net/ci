@@ -1,0 +1,6 @@
+[remote "REPLICATE_SERVER"]
+  url = git@REPLICATE_SERVER:${name}.git
+  authGroup = Anonymous Users
+  replicationDelay = 1
+  replicatePermissions = false
+  mirror = true

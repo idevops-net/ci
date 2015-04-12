@@ -1,0 +1,29 @@
+- defaults:
+    name: global
+    description: |
+      <p><b>This job is managed by jenkins job builder and will be overwritten.</b></p>
+
+      <p><b>Do not edit this job through the web</b></p>
+
+      <p>If you would like to make changes to this job, please see:
+
+        <a href="https://github.com/idevops-net/ci/project-config/">
+          https://github.com/idevops-net/ci/project-config/
+        </a>
+
+      In jenkins/jobs
+      </p>
+    project-type: freestyle
+    concurrent: true
+
+    wrappers:
+      - build-timeout:
+          timeout: 30
+      - timestamps
+
+    logrotate:
+      daysToKeep: 1
+      numToKeep: -1
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+
