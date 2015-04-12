@@ -30,12 +30,13 @@ chown -R ${GERRIT_USER}:${GERRIT_USER} ${GERRIT_HOME}
 
 #sed "s#GERRIT_USER#$GERRIT_USER#g;s#GERRIT_HOME#$GERRIT_HOME#g" ${GERRIT_HOME}/gerrit.conf.template > /etc/supervisor/conf.d/gerrit.conf
 #supervisord -c /etc/supervisor/supervisord.conf -n
-sudo -u ${GERRIT_USER} $GERRIT_HOME/gerrit/bin/gerrit.sh start
+sudo -u ${GERRIT_USER} $GERRIT_HOME/gerrit/bin/gerrit.sh restart
 
-if [ $? -eq 0 ] 
+if [ $? -eq 0 ]
 then
     echo "gerrit $GERRIT_VERSION is started successfully, please login to check."
     tail -f $GERRIT_HOME/gerrit/logs/httpd_log
 else
     cat $GERRIT_HOME/gerrit/logs/error_log
-fi 
+fi
+
