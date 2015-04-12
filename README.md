@@ -5,5 +5,14 @@ Continuous integration (CI) testing is the act of running tests that validate a 
 ## Jenkins Build Environment Setup
 
 * Prereq
+
 ** Java
+
 ** Gradle
+
+** Git
+
+** easy_install pip
+
+** pip install -y tox
+
