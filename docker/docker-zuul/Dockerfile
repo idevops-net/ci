@@ -2,7 +2,7 @@ FROM centos7
 MAINTAINER gengjh <david.geng@idevops.net>
 
 # INSTALL ZUUL
-RUN yum install -y gcc make gcc-c++ python-devel libyaml-devel git
+RUN yum clean all && yum install -y gcc make gcc-c++ python-devel libyaml-devel git
 #&& pip install zuul \
 ADD zuul /tmp/zuul/
 RUN cd /tmp/zuul; pip install -U -r requirements.txt; python setup.py install
@@ -32,10 +32,17 @@ RUN ln -s /etc/zuul/status/public_html/jquery-visibility.min.js /var/lib/zuul/ww
 && ln -s /etc/zuul/status/public_html/jquery.zuul.js /var/lib/zuul/www/ \
 && ln -s /etc/zuul/status/public_html/images /var/lib/zuul/www/
 
+# Install httpd
+RUN yum install -y httpd cronie
+ADD files/etc/httpd/conf.d/zuul.idevops.net.conf.template /tmp/
+ADD files/etc/httpd/httpd.conf /etc/httpd/conf/
+ADD files/etc/default/zuul.template /tmp/
+
 ENV GERRIT_SERVER 127.0.0.1
 ENV GERRIT_URL http://127.0.0.1
 ENV JENKINS_SSH_KEY /home/jenkins/.ssh/id_rsa
 ENV STATSD_HOST 127.0.0.1
 ENV STATSD_PORT 8125
+ENV ZUUL_GIT_HOST zuul.idevops.net
 VOLUME ['/home/jenkins/.ssh', '/etc/zuul-layout']
-EXPOSE 4730
+EXPOSE 4730 8001 8443

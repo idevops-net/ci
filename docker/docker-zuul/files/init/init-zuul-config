@@ -1,8 +1,14 @@
 #!/bin/bash
 set -x
 
-sed "s#GERRIT_SERVER#$GERRIT_SERVER#g;s#GERRIT_URL#$GERRIT_URL#g;s#JENKINS_SSH_KEY#$JENKINS_SSH_KEY#g" /etc/zuul/zuul.conf.template > /etc/zuul/zuul.conf
+sed "s#ZUUL_GIT_HOST#$ZUUL_GIT_HOST#g;s#GERRIT_SERVER#$GERRIT_SERVER#g;s#GERRIT_URL#$GERRIT_URL#g;s#JENKINS_SSH_KEY#$JENKINS_SSH_KEY#g" /etc/zuul/zuul.conf.template > /etc/zuul/zuul.conf
 cat /etc/zuul/zuul.conf
+
+sed "s#ZUUL_GIT_HOST#$ZUUL_GIT_HOST#g" /tmp/zuul.idevops.net.conf.template > /etc/httpd/conf.d/zuul.idevops.net.conf
+cat /etc/httpd/conf.d/zuul.idevops.net.conf
+
+sed "s#statsd_host#$STATSD_HOST#g;s#statsd_port#$STATSD_PORT#g" /tmp/zuul.template > /etc/default/zuul
+cat /etc/default/zuul
 
 # generate ssh key
 if [ -f $JENKINS_SSH_KEY ]; then
@@ -11,3 +17,11 @@ else
   mkdir -p /home/jenkins/.ssh
   ssh-keygen -f /home/jenkins/.ssh/id_rsa -t rsa -N ''
 fi
+
+echo '0 4 * * * find /var/lib/zuul/git/ -maxdepth 3 -type d -name ".git" -exec git --git-dir="{}" pack-refs --all \;' > /tmp/zuul.cron
+crontab /tmp/zuul.cron
+
+/usr/sbin/httpd
+
+/usr/sbin/crond -i
+
