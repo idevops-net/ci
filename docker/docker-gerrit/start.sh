@@ -6,6 +6,7 @@ if [ -f ${GERRIT_HOME}/gerrit ]; then
     echo "Find gerrit project, need not generate it again."
 else
     java -jar $GERRIT_WAR init --batch --install-plugin replication --install-plugin commit-message-length-validator -d ${GERRIT_HOME}/gerrit
+    $GERRIT_HOME/gerrit/bin/gerrit.sh stop
 fi
 
 mkdir -p ${GERRIT_HOME}/gerrit/etc
@@ -32,10 +33,11 @@ chown -R ${GERRIT_USER}:${GERRIT_USER} ${GERRIT_HOME}
 #supervisord -c /etc/supervisor/supervisord.conf -n
 sudo -u ${GERRIT_USER} $GERRIT_HOME/gerrit/bin/gerrit.sh start
 
-if [ $? -eq 0 ] 
+if [ $? -eq 0 ]
 then
     echo "gerrit $GERRIT_VERSION is started successfully, please login to check."
     tail -f $GERRIT_HOME/gerrit/logs/httpd_log
 else
     cat $GERRIT_HOME/gerrit/logs/error_log
-fi 
+fi
+
