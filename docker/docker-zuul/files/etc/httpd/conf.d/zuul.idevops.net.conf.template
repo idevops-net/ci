@@ -28,7 +28,7 @@
 
   AliasMatch ^/p/(.*/objects/[0-9a-f]{2}/[0-9a-f]{38})$ /var/lib/zuul/git/$1
   AliasMatch ^/p/(.*/objects/pack/pack-[0-9a-f]{40}.(pack|idx))$ /var/lib/zuul/git/$1
-  ScriptAlias /p/ /usr/libexec/git-core/git-http-backend
+  ScriptAlias /p/ /usr/libexec/git-core/git-http-backend/
 
   <IfModule mod_cache.c>
     CacheDefaultExpire 5
