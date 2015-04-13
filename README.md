@@ -12,6 +12,8 @@ Continuous integration (CI) testing is the act of running tests that validate a 
 
 ** Git
 
+** python-devel
+
 ** easy_install pip
 
 ** pip install -y tox
