@@ -1,0 +1,28 @@
+# The projects in this file are grouped into sections and sorted
+# alphabetical in each section.
+
+########################################################################
+# Section: server projects
+########################################################################
+
+- project:
+    name: python-dsclient
+    node: 'slave-centos7'
+    tarball-site: tarballs.idevops.net
+    doc-publisher-site: docs.idevops.net
+
+    jobs:
+      - python-jobs
+
+########################################################################
+# Section: ci
+########################################################################
+
+- project:
+    name: ci
+    node: 'slave-centos7'
+    tarball-site: tarballs.idevops.net
+    doc-publisher-site: docs.idevops.net
+
+    jobs:
+      - gate-{name}-style
