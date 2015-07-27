@@ -1,0 +1,16 @@
+- job-template:
+    name: 'gate-{name}-style'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 60
+      - timestamps
+
+    builders:
+      - gerrit-git-prep
+      - revoke-sudo
+
+    publishers:
+      - console-log
+

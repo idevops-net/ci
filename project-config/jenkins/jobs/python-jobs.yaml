@@ -1,0 +1,90 @@
+- job-template:
+    name: 'gate-{name}-pep8'
+
+    builders:
+      - revoke-sudo
+      - gerrit-git-prep
+      - pep8
+
+    publishers:
+      - console-log
+
+    node: '{node}'
+
+
+- job-template:
+    name: 'gate-{name}-pylint'
+
+    builders:
+      - revoke-sudo
+      - gerrit-git-prep
+      - pylint
+
+    publishers:
+      - console-log
+
+    node: '{node}'
+
+
+- job-template:
+    name: 'gate-{name}-python27'
+
+    wrappers:
+      - build-timeout:
+          timeout: 50
+      - timestamps
+
+    builders:
+      - revoke-sudo
+      - gerrit-git-prep
+      - python27
+      - assert-no-extra-files
+
+    publishers:
+      - test-results
+      - console-log
+
+    node: '{node}'
+
+
+- job-template:
+    name: 'gate-{name}-python34'
+
+    wrappers:
+      - build-timeout:
+          timeout: 40
+      - timestamps
+
+    builders:
+      - revoke-sudo
+      - gerrit-git-prep
+      - python34
+      - assert-no-extra-files
+
+    publishers:
+      - test-results
+      - console-log
+
+    node: '{node}'
+
+
+- job-template:
+    name: 'gate-{name}-docs'
+
+    builders:
+      - revoke-sudo
+      - gerrit-git-prep
+      - docs
+
+    publishers:
+      - upload-sphinx-draft
+
+    node: '{node}'
+
+- job-group:
+    name: python-jobs
+    jobs:
+      - 'gate-{name}-pep8'
+      - 'gate-{name}-docs'
+      - 'gate-{name}-python27'
+      - 'gate-{name}-python34'

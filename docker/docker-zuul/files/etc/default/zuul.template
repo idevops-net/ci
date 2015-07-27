@@ -1,0 +1,2 @@
+export STATSD_HOST=statsd_host
+export STATSD_PORT=statsd_port

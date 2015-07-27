@@ -190,6 +190,13 @@ project-templates:
     gate:
       - 'gate-{name}-python34'
 
+  - name: ci-jobs
+    check:
+      - 'gate-{name}-style'
+    gate:
+      - 'gate-{name}-style'
+
+
 jobs:
   - name: ^.*$
     parameter-function: set_node_options_default
@@ -208,14 +215,9 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-#    check:
-#      - 'gate-python-dsclient-pep8'
-#      - 'gate-python-dsclient-docs'
-#      - 'gate-python-dsclient-python27'
-#    gate:
-#      - 'gate-python-dsclient-docs'
-#      - 'gate-python-dsclient-pep8'
-#      - 'gate-python-dsclient-python27'
-#    post:
-#      - 'python-dsclient-branch-tarball'
+
+  - name: idevops-net/ci
+    template:
+      - name: merge-check
+      - name: ci-jobs
 

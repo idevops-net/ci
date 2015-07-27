@@ -1,0 +1,108 @@
+<VirtualHost *:8880>
+  ServerName ZUUL_GIT_HOST
+  ServerAdmin david.geng@idevops.net
+  DocumentRoot /var/lib/zuul/www
+
+  <Directory /var/lib/zuul/www>
+    Allow from all
+    Satisfy Any
+  </Directory>
+  <Directory /usr/libexec/git-core>
+    Allow from all
+    Satisfy Any
+  </Directory>
+
+  ErrorLog /var/log/httpd/ZUUL_GIT_HOST-error.log
+
+  LogLevel warn
+
+  CustomLog /var/log/httpd/ZUUL_GIT_HOST-access.log combined
+
+  RewriteEngine on
+  RewriteRule ^/status.json$ http://127.0.0.1:8001/status.json [P]
+
+  AddOutputFilterByType DEFLATE application/json
+
+  SetEnv GIT_PROJECT_ROOT /var/lib/zuul/git/
+  SetEnv GIT_HTTP_EXPORT_ALL
+
+  AliasMatch ^/p/(.*/objects/[0-9a-f]{2}/[0-9a-f]{38})$ /var/lib/zuul/git/$1
+  AliasMatch ^/p/(.*/objects/pack/pack-[0-9a-f]{40}.(pack|idx))$ /var/lib/zuul/git/$1
+  ScriptAlias /p/ /usr/libexec/git-core/git-http-backend/
+
+  <IfModule mod_cache.c>
+    CacheDefaultExpire 5
+    <IfModule mod_mem_cache.c>
+      CacheEnable mem /status.json
+      # 12MByte total cache size.
+      MCacheSize 12288
+      MCacheMaxObjectCount 10
+      MCacheMinObjectSize 1
+      # 8MByte max size per cache entry
+      MCacheMaxObjectSize 8388608
+      MCacheMaxStreamingBuffer 8388608
+    </IfModule>
+    <IfModule mod_cache_disk.c>
+      CacheEnable disk /status.json
+      CacheRoot /var/cache/apache2/mod_cache_disk
+    </IfModule>
+  </IfModule>
+</VirtualHost>
+
+<IfModule mod_ssl.c>
+<VirtualHost *:8443>
+  ServerName ZUUL_GIT_HOST
+  ServerAdmin david.geng@idevops.net
+  DocumentRoot /var/lib/zuul/www
+  SSLEngine on
+  SSLProtocol All -SSLv2 -SSLv3
+  SSLCertificateFile /etc/ssl/certs/ZUUL_GIT_HOST.pem
+  SSLCertificateKeyFile /etc/ssl/private/ZUUL_GIT_HOST.key
+
+  <Directory /var/lib/zuul/www>
+    Allow from all
+    Satisfy Any
+  </Directory>
+  <Directory /usr/libexec/git-core>
+    Allow from all
+    Satisfy Any
+  </Directory>
+
+  ErrorLog /var/log/httpd/ZUUL_GIT_HOST-error.log
+
+  LogLevel warn
+
+  CustomLog /var/log/httpd/ZUUL_GIT_HOST-access.log combined
+
+  RewriteEngine on
+  RewriteRule ^/status.json$ http://127.0.0.1:8001/status.json [P]
+
+  AddOutputFilterByType DEFLATE application/json
+
+  SetEnv GIT_PROJECT_ROOT /var/lib/zuul/git/
+  SetEnv GIT_HTTP_EXPORT_ALL
+
+  AliasMatch ^/p/(.*/objects/[0-9a-f]{2}/[0-9a-f]{38})$ /var/lib/zuul/git/$1
+  AliasMatch ^/p/(.*/objects/pack/pack-[0-9a-f]{40}.(pack|idx))$ /var/lib/zuul/git/$1
+  ScriptAlias /p/ /usr/libexec/git-core/git-http-backend/
+
+  <IfModule mod_cache.c>
+    CacheDefaultExpire 5
+    <IfModule mod_mem_cache.c>
+      CacheEnable mem /status.json
+      # 12MByte total cache size.
+      MCacheSize 12288
+      MCacheMaxObjectCount 10
+      MCacheMinObjectSize 1
+      # 8MByte max size per cache entry
+      MCacheMaxObjectSize 8388608
+      MCacheMaxStreamingBuffer 8388608
+    </IfModule>
+    <IfModule mod_cache_disk.c>
+      CacheEnable disk /status.json
+      CacheRoot /var/cache/apache2/mod_cache_disk
+    </IfModule>
+  </IfModule>
+</VirtualHost>
+</IfModule>
+
