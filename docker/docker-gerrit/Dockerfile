@@ -1,40 +1,49 @@
+FROM java:openjdk-7-jre
 
-FROM ubuntu:trusty
+MAINTAINER David <david@esse.io>
 
-MAINTAINER David Geng <david.geng@idevops.net>
-
-ENV GERRIT_USER gerrit2
-ENV GERRIT_HOME /home/${GERRIT_USER}
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    libcgi-pm-perl \
+    gitweb \
+    sudo \
+  && rm -rf /var/lib/apt/lists/*
+ENV GERRIT_HOME /var/gerrit
+ENV GERRIT_SITE ${GERRIT_HOME}/review_site
 ENV GERRIT_WAR ${GERRIT_HOME}/gerrit.war
-ENV GERRIT_VERSION 2.9.3
-ENV GERRIT_URL http://127.0.0.1
-
-ENV AUTH_TYPE DEVELOPMENT_BECOME_ANY_ACCOUNT
-ENV LDAP_SERVER ldap://127.0.0.1
-ENV LDAP_ACCOUNT_BASE ou=people,dc=example,dc=com
-
+ENV GERRIT_VERSION 2.11.2
+ENV GERRIT_USER gerrit2
 ENV REPLICATE_ENABLED true
 ENV REPLICATE_USER jenkins
 ENV REPLICATE_SERVER github.com
 ENV REPLICATE_KEY ${GERRIT_HOME}/.ssh/id_rsa
 
-RUN useradd -m ${GERRIT_USER}
+RUN useradd -m -d "$GERRIT_HOME" -u 1000 -U  -s /bin/bash $GERRIT_USER
 
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y openjdk-7-jre-headless git-core
-#ADD https://gerrit-releases.storage.googleapis.com/gerrit-${GERRIT_VERSION}.war /tmp/gerrit.war
-ADD gerrit-${GERRIT_VERSION}.war /tmp/gerrit.war
-ADD files/ssh/ssh_conf /etc/ssh/
-ADD start.sh /app/
-RUN mv /tmp/gerrit.war $GERRIT_WAR
+#Download gerrit.war
+#RUN curl -L https://gerrit-releases.storage.googleapis.com/gerrit-${GERRIT_VERSION}.war -o $GERRIT_WAR
+#Only for local test
+COPY gerrit-${GERRIT_VERSION}.war $GERRIT_WAR
 
-WORKDIR $GERRIT_HOME
+COPY gerrit-entrypoint.sh ${GERRIT_HOME}/
+COPY gerrit-start.sh ${GERRIT_HOME}/
 
-ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64/jre
+RUN chmod +x ${GERRIT_HOME}/gerrit*.sh
 
-ADD files/gerrit.config.template ${GERRIT_HOME}/
-ADD files/replication.config.template ${GERRIT_HOME}/
-ADD files/ssh/config.template ${GERRIT_HOME}/
+#A directory has to be created before a volume is mounted to it.
+#So gerrit user can own this directory.
+RUN mkdir -p $GERRIT_SITE
+
+COPY files/replication.config.template ${GERRIT_HOME}/
+COPY files/ssh/config.template ${GERRIT_HOME}/
+COPY files/ssh/ssh_conf /etc/ssh/
+
+#Gerrit site directory is a volume, so configuration and repositories
+#can be persisted and survive image upgrades.
+VOLUME $GERRIT_SITE
+
+ENTRYPOINT ["/var/gerrit/gerrit-entrypoint.sh"]
 
 EXPOSE 8080 29418
 
-CMD ["/app/start.sh"]
+CMD ["/var/gerrit/gerrit-start.sh"]
+
