@@ -1,5 +1,5 @@
 FROM jenkins
-MAINTAINER david <david@esse.io>
+MAINTAINER David Geng <david@esse.io>
 
 # Install plugins
 COPY plugins.txt /usr/local/etc/plugins.txt
@@ -13,9 +13,7 @@ COPY credentials.xml /usr/local/etc/credentials.xml
 
 # Add maven installation config file
 COPY hudson.tasks.Maven.xml /usr/local/etc/hudson.tasks.Maven.xml
-
-
-RUN curl -L http://apache.arvixe.com/maven/maven-3/3.3.3/binaries/apache-maven-3.3.3-bin.zip -o /usr/local/etc/apache-maven-3.3.3-bin.zip
+COPY apache-maven-3.3.3-bin.zip /usr/local/etc/apache-maven-3.3.3-bin.zip
 COPY maven.installedFrom /usr/local/etc/.installedFrom
 
 # Add Jenkins URL and system admin e-mail config file

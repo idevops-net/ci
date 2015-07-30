@@ -23,11 +23,11 @@ cp /usr/local/etc/credentials.xml ${JENKINS_HOME}/credentials.xml
 # Setup maven installation
 cp /usr/local/etc/hudson.tasks.Maven.xml ${JENKINS_HOME}/hudson.tasks.Maven.xml
 mkdir -p /var/jenkins_home/tools/hudson.tasks.Maven_MavenInstallation
-unzip -q /usr/local/etc/apache-maven-3.2.2-bin.zip -d /var/jenkins_home/tools/hudson.tasks.Maven_MavenInstallation
-mv /var/jenkins_home/tools/hudson.tasks.Maven_MavenInstallation/apache-maven-3.2.2 \
-   /var/jenkins_home/tools/hudson.tasks.Maven_MavenInstallation/Maven-3.2.2
+unzip -q /usr/local/etc/apache-maven-3.3.3-bin.zip -d /var/jenkins_home/tools/hudson.tasks.Maven_MavenInstallation
+mv /var/jenkins_home/tools/hudson.tasks.Maven_MavenInstallation/apache-maven-3.3.3 \
+   /var/jenkins_home/tools/hudson.tasks.Maven_MavenInstallation/Maven-3.3.3
 cp /usr/local/etc/.installedFrom \
-   /var/jenkins_home/tools/hudson.tasks.Maven_MavenInstallation/Maven-3.2.2/.installedFrom
+   /var/jenkins_home/tools/hudson.tasks.Maven_MavenInstallation/Maven-3.3.3/.installedFrom
 
 # Replace '/' in url to '\/'
 [ "${JENKINS_WEBURL%/}" = "${JENKINS_WEBURL}" ] && JENKINS_WEBURL="${JENKINS_WEBURL}/"
