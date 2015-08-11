@@ -26,9 +26,10 @@ esac
 IP=$(cat /etc/hosts | head -n1 | awk '{print $1}')
 PORT=9092
 
+[ -z "ZOOKEEPER_URL" ] && ZOOKEEPER_URL=${ZOOKEEPER_IP}:${ZOOKEEPER_PORT:-2181}
+
 cat /kafka/config/server.properties${EXTENSION} \
-  | sed "s|{{ZOOKEEPER_IP}}|${ZOOKEEPER_IP}|g" \
-  | sed "s|{{ZOOKEEPER_PORT}}|${ZOOKEEPER_PORT:-2181}|g" \
+  | sed "s|{{ZOOKEEPER_URL}}|${ZOOKEEPER_URL}|g" \
   | sed "s|{{BROKER_ID}}|${BROKER_ID:-0}|g" \
   | sed "s|{{CHROOT}}|${CHROOT:-}|g" \
   | sed "s|{{EXPOSED_HOST}}|${EXPOSED_HOST:-$IP}|g" \

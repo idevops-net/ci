@@ -103,11 +103,6 @@ with their default values, if any:
 
   Maps to Kafka's `broker.id` setting. Must be a unique integer for each broker
   in a cluster.
-- `PORT=9092`
-
-  Maps to Kafka's `port` setting. The port that the broker service listens on.
-  You will need to explicitly publish a new port from container instances if you
-  change this.
 - `EXPOSED_HOST=<container's IP within docker0's subnet>`
 
   Maps to Kafka's `advertised.host.name` setting. Kafka brokers gossip the list
@@ -130,7 +125,7 @@ with their default values, if any:
 - `ZOOKEEPER_PORT=2181`
 
   Used in constructing Kafka's `zookeeper.connect` setting.
-- `CHROOT`, ex: `/v0_8_1`
+- `CHROOT`, ex: `/kafka/v0_8_2`
 
   ZooKeeper root path used in constructing Kafka's `zookeeper.connect` setting.
   This is blank by default, which means Kafka will use the ZK `/`. You should
