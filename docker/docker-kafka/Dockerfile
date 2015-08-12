@@ -5,7 +5,8 @@ RUN mkdir /kafka /data /logs
 
 RUN apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    ca-certificates
+    ca-certificates \
+    sudo
 
 ENV KAFKA_RELEASE_ARCHIVE kafka_2.10-0.8.2.1.tgz
 
@@ -30,9 +31,8 @@ ADD start.sh /start.sh
 
 # Set up a user to run Kafka
 RUN groupadd kafka && \
-  useradd -d /kafka -g kafka -s /bin/false kafka && \
-  chown -R kafka:kafka /kafka /data /logs
-USER kafka
+  useradd -d /kafka -g kafka -s /bin/false kafka 
+
 ENV PATH /kafka/bin:$PATH
 WORKDIR /kafka
 

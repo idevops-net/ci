@@ -40,5 +40,7 @@ cat /kafka/config/server.properties${EXTENSION} \
 export CLASSPATH=$CLASSPATH:/kafka/lib/slf4j-log4j12.jar
 export JMX_PORT=7203
 
+chown -R kafka:kafka /kafka /data /logs
+
 echo "Starting kafka"
-exec /kafka/bin/kafka-server-start.sh /kafka/config/server.properties
+exec sudo -u kafka /kafka/bin/kafka-server-start.sh /kafka/config/server.properties
