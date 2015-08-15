@@ -4,4 +4,5 @@ Host REPLICATE_SERVER
   StrictHostKeyChecking no
   UserKnownHostsFile /dev/null
   User REPLICATE_USER
+  Port RP_SERVER_PORT
   Hostname REPLICATE_SERVER

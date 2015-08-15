@@ -77,9 +77,9 @@ if [ "$1" = '/var/gerrit/gerrit-start.sh' ]; then
 
   # Replication
   if [ x"true" = x${REPLICATE_ENABLED} ]; then
-    sed "s#REPLICATE_SERVER#$REPLICATE_SERVER#g;s#REPLICATE_USER#$REPLICATE_USER#g" ${GERRIT_HOME}/replication.config.template > ${GERRIT_SITE}/etc/replication.config
+    sed "s#REPLICATE_SERVER#$REPLICATE_SERVER#g;s#RE_AUTHGROUP#$RE_AUTHGROUP#g" ${GERRIT_HOME}/replication.config.template > ${GERRIT_SITE}/etc/replication.config
     cat ${GERRIT_SITE}/etc/replication.config
-    sed "s#REPLICATE_SERVER#$REPLICATE_SERVER#g;s#REPLICATE_USER#$REPLICATE_USER#g;s#REPLICATE_KEY#${GERRIT_HOME}/.ssh/$REPLICATE_KEY#g" ${GERRIT_HOME}/config.template > ${GERRIT_HOME}/.ssh/config
+    sed "s#RP_SERVER_PORT#$RP_SERVER_PORT#g;s#REPLICATE_SERVER#$REPLICATE_SERVER#g;s#REPLICATE_USER#$REPLICATE_USER#g;s#REPLICATE_KEY#${GERRIT_HOME}/.ssh/$REPLICATE_KEY#g" ${GERRIT_HOME}/config.template > ${GERRIT_HOME}/.ssh/config
     cat ${GERRIT_HOME}/.ssh/config
   fi
 
@@ -96,4 +96,5 @@ fi
 #mkdir -p /etc/supervisor/conf.d/
 chown -R ${GERRIT_USER}:${GERRIT_USER} ${GERRIT_HOME}
 chown -R ${GERRIT_USER}:${GERRIT_USER} ${GERRIT_SITE}
+chmod 600 ${GERRIT_HOME}/.ssh/${REPLICATE_KEY}
 exec "$@"
