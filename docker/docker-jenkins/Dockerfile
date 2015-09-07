@@ -1,6 +1,20 @@
 FROM jenkins
 MAINTAINER David Geng <david@esse.io>
 
+# Install sbt
+USER root
+RUN apt-get update && apt-get install -y apt-transport-https
+RUN echo "deb https://dl.bintray.com/sbt/debian /" | tee -a /etc/apt/sources.list.d/sbt.list
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 642AC823 && \
+    apt-get update && apt-get install -y sbt && rm -rf /var/lib/apt/lists/*
+
+# Set timezone to HongKong
+RUN cp /usr/share/zoneinfo/Asia/Hong_Kong /etc/localtime
+
+USER jenkins
+
+ENV JAVA_OPTS -Duser.timezone=Asia/Hong_Kong
+
 # Install plugins
 COPY plugins.txt /usr/local/etc/plugins.txt
 RUN /usr/local/bin/plugins.sh /usr/local/etc/plugins.txt
