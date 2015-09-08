@@ -5,7 +5,7 @@
       <name>{GERRIT_NAME}</name>
       <noConnectionOnStartup>false</noConnectionOnStartup>
       <config class="com.sonyericsson.hudson.plugins.gerrit.trigger.config.Config">
-        <gerritHostName>gerrit</gerritHostName>
+        <gerritHostName>{GERRIT_NAME}</gerritHostName>
         <gerritSshPort>29418</gerritSshPort>
         <gerritProxy></gerritProxy>
         <gerritUserName>jenkins</gerritUserName>
