@@ -6,7 +6,9 @@ USER root
 RUN apt-get update && apt-get install -y apt-transport-https
 RUN echo "deb https://dl.bintray.com/sbt/debian /" | tee -a /etc/apt/sources.list.d/sbt.list
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 642AC823 && \
-    apt-get update && apt-get install -y sbt && rm -rf /var/lib/apt/lists/*
+    apt-get update && apt-get install -y sbt python-pip python-dev build-essential gcc libxml2-dev libxslt1-dev libffi-dev libssl-dev && rm -rf /var/lib/apt/lists/*
+RUN pip install --upgrade pip && \
+    pip install --upgrade virtualenv
 
 # Set timezone to HongKong
 RUN cp /usr/share/zoneinfo/Asia/Hong_Kong /etc/localtime
